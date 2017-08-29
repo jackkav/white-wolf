@@ -24,7 +24,7 @@ class App extends Component {
     this.setState({
       events: [roomTemperature(x), fireStrength(x), ...this.state.events],
     })
-    // this.props.fireBurning(x)
+    this.props.fireBurning(x)
   }
   burnWood() {
     this.props.burnWood()
