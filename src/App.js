@@ -5,7 +5,7 @@ import { Observable } from 'rxjs'
 import { AppRegistry } from 'react-native'
 import { CoolDownButton } from './CoolDownButton'
 import { gatherWood, burnWood, tick, fireBurning } from './ducks/actions'
-import { fire$, up, fireStrength } from './Fire'
+import { fire$, putSomeLogsOn, fireStrength } from './Fire'
 const oneSec = 1000
 
 const roomTemperature = fire => {
@@ -19,6 +19,10 @@ const addFireState = fire => {}
 class App extends Component {
   state = {
     events: [],
+    location: 0,
+  }
+  changeLocation(newLocation) {
+    this.setState({ location: newLocation })
   }
   updateState(x) {
     this.setState({
@@ -28,7 +32,7 @@ class App extends Component {
   }
   burnWood() {
     this.props.burnWood()
-    up()
+    putSomeLogsOn()
   }
   componentDidMount() {
     fire$.subscribe(x => this.updateState(x))
@@ -48,22 +52,28 @@ class App extends Component {
         </EventColumn>
         <Main>
           <Header>
-            <AnyText>A dark room</AnyText>
+            <Touch onPress={() => this.changeLocation(0)}>
+              <AnyText>A dark room</AnyText>
+            </Touch>
+            <Touch onPress={() => this.changeLocation(1)}>
+              <AnyText>A silent forest</AnyText>
+            </Touch>
           </Header>
           <LocationSlider>
             <LocationActions>
-              <CoolDownButton
-                title="light fire"
-                tick={oneSec}
-                cooldown={10}
-                todo={() => this.burnWood()}
-              />
-              {/* <CoolDownButton
-                title="gather"
-                tick={oneSec}
-                cooldown={20}
-                todo={() => this.props.gatherWood()}
-              /> */}
+              {!this.state.location
+                ? <CoolDownButton
+                    title="light fire"
+                    tick={oneSec}
+                    cooldown={10}
+                    todo={() => this.burnWood()}
+                  />
+                : <CoolDownButton
+                    title="gather"
+                    tick={oneSec}
+                    cooldown={20}
+                    todo={() => this.props.gatherWood()}
+                  />}
             </LocationActions>
             <Stores>
               <AnyText>Stores</AnyText>
@@ -100,12 +110,16 @@ const Root = styled.View`
   flex: 1;
   flex-direction: row;
 `
+const Touch = styled.TouchableWithoutFeedback``
 const Main = styled.View`
   flex: 6;
   flex-direction: column;
 `
 const EventColumn = styled.View`flex: 1;`
-const Header = styled.View`flex: 1;`
+const Header = styled.View`
+  flex: 1;
+  flex-direction: row;
+`
 const LocationSlider = styled.View`
   flex: 7;
   flex-direction: row;

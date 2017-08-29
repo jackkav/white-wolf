@@ -26,7 +26,7 @@ const reverse = i => {
   if (!i) return 0
   return numberOfLogs - i
 }
-export const up = () => {
+export const putSomeLogsOn = () => {
   numberOfLogs += 5
 }
 fire$.subscribe(x => console.log(fireStrength(x), x))
