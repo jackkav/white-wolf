@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Observable } from 'rxjs'
 import { AppRegistry } from 'react-native'
 import { CoolDownButton } from './CoolDownButton'
-import { gatherWood, burnWood } from './ducks/actions'
+import { gatherWood, burnWood, tick } from './ducks/actions'
 const oneSec = 1000
 const fireStrength = fire => {
   if (!fire) return 'the fire is dead.'
@@ -22,36 +22,26 @@ const roomTemperature = fire => {
 const addWood = fire => {
   fire++
 }
+
 const addFireState = fire => {}
 class App extends Component {
   state = {
     events: [],
-    fire: 0,
-    tick: 1000,
-    cooldown: 0,
+  }
+  updateState() {
+    this.setState({
+      events: [
+        ...this.state.events,
+        fireStrength(this.props.appData.fire),
+        roomTemperature(this.props.appData.fire),
+      ],
+    })
   }
   componentDidMount() {
-    this.setState({ fire: 0 })
-    // const clicks$ = Observable.fromEvent(document, 'click').subscribe(() =>
-    //   console.log('add wood'),
-    // )
-    const ticks$ = Observable.interval(this.state.tick).take(10)
-    ticks$.subscribe(x =>
-      this.setState({
-        events: [
-          ...this.state.events,
-          fireStrength(this.state.fire),
-          roomTemperature(this.state.fire),
-        ],
-      }),
-    )
-    const fire$ = Observable.interval(this.state.tick)
-    fire$.subscribe(x =>
-      this.setState({ fire: this.state.fire > -1 && this.state.fire - 1 }),
-    )
-  }
-  addWoodToFire() {
-    this.setState({ fire: this.state.fire + 3 })
+    const ticks$ = Observable.interval(this.props.appData.tick).take(10)
+    ticks$.distinct().subscribe(x => this.updateState(x))
+    const fire$ = Observable.interval(this.props.appData.tick)
+    fire$.subscribe(x => this.props.tick())
   }
   gatherWood() {
     this.props.gatherWood()
@@ -116,6 +106,7 @@ function mapDispatchToProps(dispatch) {
   return {
     burnWood: () => dispatch(burnWood()),
     gatherWood: () => dispatch(gatherWood()),
+    tick: () => dispatch(tick()),
   }
 }
 

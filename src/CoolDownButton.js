@@ -20,7 +20,7 @@ export class CoolDownButton extends Component {
       this.setState({ timeleft: this.props.cooldown })
       console.log(this.state.timeleft, this.props.cooldown)
 
-      // this.props.todo()
+      this.props.todo()
       Observable.interval(this.props.tick)
         .take(this.props.cooldown)
         .subscribe(x => this.decrement(x))
@@ -38,7 +38,6 @@ export class CoolDownButton extends Component {
 
           <CenterText>
             {this.props.title}
-            {timeleftAsWidth(this.state.timeleft, this.props.cooldown)}
           </CenterText>
         </Stoke>
       </StokeButton>
