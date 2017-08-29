@@ -1,3 +1,4 @@
+- separate room state into another observable
 - start subscribing to events on state changes
 - builder events
 - interruption events

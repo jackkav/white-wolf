@@ -17,7 +17,7 @@ export const fire$ = Rx.Observable.create(observer => {
       observer.next(reverse(n))
       n += 1
     }
-  }, 1000)
+  }, 4000)
 
   return () => clearInterval(intervalId)
 })

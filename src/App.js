@@ -12,7 +12,8 @@ const roomTemperature = fire => {
   if (!fire) return 'the room is freezing.'
   if (fire === 1) return 'the room is cold.'
   if (fire === 2) return 'the room is mild.'
-  if (fire >= 3) return 'the room is warm.'
+  if (fire === 3) return 'the room is warm.'
+  if (fire >= 4) return 'the room is hot.'
 }
 
 const addFireState = fire => {}
@@ -36,6 +37,7 @@ class App extends Component {
   }
   componentDidMount() {
     fire$.subscribe(x => this.updateState(x))
+    //NOTE: need a way to start subscribing on state change
   }
   gatherWood() {
     this.props.gatherWood()
@@ -53,7 +55,9 @@ class App extends Component {
         <Main>
           <Header>
             <Touch onPress={() => this.changeLocation(0)}>
-              <AnyText>A dark room</AnyText>
+              <AnyText>
+                {this.props.appData.fire ? 'A firelit room' : 'A dark room'}
+              </AnyText>
             </Touch>
             <Touch onPress={() => this.changeLocation(1)}>
               <AnyText>A silent forest</AnyText>
@@ -63,7 +67,9 @@ class App extends Component {
             <LocationActions>
               {!this.state.location
                 ? <CoolDownButton
-                    title="light fire"
+                    title={
+                      this.props.appData.fire ? 'stoke fire' : 'light fire'
+                    }
                     tick={oneSec}
                     cooldown={10}
                     todo={() => this.burnWood()}
