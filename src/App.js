@@ -5,6 +5,7 @@ import { Observable } from 'rxjs'
 import { AppRegistry } from 'react-native'
 import { CoolDownButton } from './CoolDownButton'
 import { gatherWood, burnWood, tick } from './ducks/actions'
+import { fire$, up } from './Fire'
 const oneSec = 1000
 const fireStrength = fire => {
   if (!fire) return 'the fire is dead.'
@@ -19,29 +20,23 @@ const roomTemperature = fire => {
   if (fire === 2) return 'the room is mild.'
   if (fire === 3) return 'the room is warm.'
 }
-const addWood = fire => {
-  fire++
-}
+// const addWood = fire => {
+//   fire++
+// }
 
 const addFireState = fire => {}
 class App extends Component {
   state = {
     events: [],
   }
-  updateState() {
+  updateState(x) {
     this.setState({
-      events: [
-        ...this.state.events,
-        fireStrength(this.props.appData.fire),
-        roomTemperature(this.props.appData.fire),
-      ],
+      events: [...this.state.events, fireStrength(x), roomTemperature(x)],
     })
   }
   componentDidMount() {
-    const ticks$ = Observable.interval(this.props.appData.tick).take(10)
-    ticks$.distinct().subscribe(x => this.updateState(x))
-    const fire$ = Observable.interval(this.props.appData.tick)
-    fire$.subscribe(x => this.props.tick())
+    fire$.subscribe(x => this.updateState(x))
+    Observable.fromEvent(document, 'click').subscribe(x => up())
   }
   gatherWood() {
     this.props.gatherWood()
@@ -111,6 +106,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
+
 const Root = styled.View`
   flex: 1;
   flex-direction: row;
@@ -143,12 +139,3 @@ const StokeCooldown = styled.View`
 `
 const AnyText = styled.Text``
 const CenterText = styled.Text`text-align: center;`
-// const CoolDown = styled.div`
-//   width: 50%;
-//   height: 100%;
-//   top: 0;
-//   left: 0;
-//   position: absolute;
-//   z-index: -1;
-//   background-color: green;
-// `
