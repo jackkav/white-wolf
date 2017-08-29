@@ -54,7 +54,7 @@ const StokeButton = styled.TouchableWithoutFeedback``
 const StokeCooldown = styled.View`
   width: ${p => timeleftAsWidth(p.timeleft, p.cooldown)};
   height: 30;
-  background-color: gray;
+  background-color: rgba(0, 0, 0, .6);
   position: absolute;
 `
 const CenterText = styled.Text`text-align: center;`

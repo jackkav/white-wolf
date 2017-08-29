@@ -1,1 +1,4 @@
-- fire events should update state
+- start subscribing to events on state changes
+- builder events
+- interruption events
+- some event driven animations starting with fire
