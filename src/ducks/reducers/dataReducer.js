@@ -1,4 +1,4 @@
-import { GATHER_WOOD, BURN_WOOD, TICK } from '../constants'
+import { GATHER_WOOD, BURN_WOOD, TICK, BURNING } from '../constants'
 const initialState = {
   tick: 2000,
   wood: 10,
@@ -16,12 +16,17 @@ export default function dataReducer(state = initialState, action) {
       return {
         ...state,
         wood: state.wood - 5,
-        fire: state.fire + 3,
+        fire: state.fire + 5,
       }
     case GATHER_WOOD:
       return {
         ...state,
         wood: state.wood + 10,
+      }
+    case BURNING:
+      return {
+        ...state,
+        fire: action.fire,
       }
     default:
       return state

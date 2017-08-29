@@ -1,1 +1,1 @@
-- fire
+- fire events should update state

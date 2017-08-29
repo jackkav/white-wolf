@@ -1,4 +1,4 @@
-import { BURN_WOOD, GATHER_WOOD, TICK } from './constants'
+import { BURN_WOOD, GATHER_WOOD, TICK, BURNING } from './constants'
 
 export function burnWood() {
   return {
@@ -15,5 +15,12 @@ export function gatherWood() {
 export function tick() {
   return {
     type: TICK,
+  }
+}
+
+export function fireBurning(fire) {
+  return {
+    type: BURNING,
+    fire,
   }
 }

@@ -1,6 +1,6 @@
 import * as Rx from 'rxjs'
 
-const fireStrength = fire => {
+export const fireStrength = fire => {
   if (!fire) return 'the fire is dead.'
   if (fire === 1) return 'the fire is flickering.'
   if (fire === 2) return 'the fire is smoldering.'
@@ -9,6 +9,7 @@ const fireStrength = fire => {
 }
 
 let numberOfLogs = 0
+
 export const fire$ = Rx.Observable.create(observer => {
   let n = numberOfLogs
   const intervalId = setInterval(() => {
@@ -16,7 +17,7 @@ export const fire$ = Rx.Observable.create(observer => {
       observer.next(reverse(n))
       n += 1
     }
-  }, 2000)
+  }, 1000)
 
   return () => clearInterval(intervalId)
 })
@@ -26,7 +27,6 @@ const reverse = i => {
   return numberOfLogs - i
 }
 export const up = () => {
-  numberOfLogs += 3
+  numberOfLogs += 5
 }
 fire$.subscribe(x => console.log(fireStrength(x), x))
-// Rx.Observable.fromEvent(document, 'click').subscribe(x => up())

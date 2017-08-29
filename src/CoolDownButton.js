@@ -46,16 +46,15 @@ export class CoolDownButton extends Component {
 }
 const Stoke = styled.View`
   width: ${ButtonWidth};
-  height: 50;
+  height: 30;
   justify-content: center;
   border-width: 1;
 `
 const StokeButton = styled.TouchableWithoutFeedback``
 const StokeCooldown = styled.View`
   width: ${p => timeleftAsWidth(p.timeleft, p.cooldown)};
-  height: 50;
+  height: 30;
   background-color: gray;
   position: absolute;
 `
-const AnyText = styled.Text``
 const CenterText = styled.Text`text-align: center;`
